@@ -1,4 +1,4 @@
-package szte.adatb.allaskereses.Model;
+package szte.adatb.allaskereses.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package szte.adatb.allaskereses.Repository;
+package szte.adatb.allaskereses.repository;
 
-import szte.adatb.allaskereses.Model.Allaskereso;
+import szte.adatb.allaskereses.model.Allaskereso;
 
 import java.util.List;
 
