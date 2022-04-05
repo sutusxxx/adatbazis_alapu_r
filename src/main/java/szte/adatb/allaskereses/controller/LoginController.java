@@ -1,21 +1,23 @@
 package szte.adatb.allaskereses.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import szte.adatb.allaskereses.model.LoginForm;
 import szte.adatb.allaskereses.service.LoginService;
 
-@Controller
+@RestController
 public class LoginController {
     private LoginService service;
 
     @Autowired
     public LoginController(LoginService service) {
+        this.service = service;
     }
 
-    @RequestMapping("/login")
-    public String getLoginPage(Model model) {
-        return "login";
+    @PostMapping("/login")
+    public void login(@RequestBody LoginForm loginForm) {
+        service.login(loginForm.getUsername(), loginForm.getPassword());
     }
 }

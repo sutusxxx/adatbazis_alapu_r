@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class JobSeeker {
     private int id;
     private String username;
     private String password;
@@ -23,7 +23,7 @@ public class User {
     private String phone;
     private Set<Job> applications;
 
-    public User(int id, String username, String password, String name, String education, Date dateOfBirth, String language, String email, String address, String phone) {
+    public JobSeeker(int id, String username, String password, String name, String education, Date dateOfBirth, String language, String email, String address, String phone) {
         this.id = id;
         this.username = username;
         this.password = password;

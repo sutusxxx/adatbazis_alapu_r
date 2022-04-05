@@ -3,7 +3,7 @@ package szte.adatb.allaskereses.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import szte.adatb.allaskereses.model.User;
+import szte.adatb.allaskereses.model.JobSeeker;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -13,12 +13,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class UserRepository implements CrudRepository<User> {
+public class JobSeekerRepository implements CrudRepository<JobSeeker> {
     private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
 
     @Autowired
-    public UserRepository(JdbcTemplate jdbcTemplate, DataSource dataSource) {
+    public JobSeekerRepository(JdbcTemplate jdbcTemplate, DataSource dataSource) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.dataSource = dataSource;
     }
 
     public static final String SELECT_ALL = "SELECT * FROM allaskeresok";
@@ -26,9 +28,9 @@ public class UserRepository implements CrudRepository<User> {
     public static final String SELECT_USER_BY_NAME = "SELECT * FROM allaskeresok WHERE felhasznalonev=?";
 
     @Override
-    public List<User> findAll() {
+    public List<JobSeeker> findAll() {
 
-        List<User> result = jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new User(
+        List<JobSeeker> result = jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new JobSeeker(
                 rs.getInt("allaskeresoID"),
                 rs.getString("felhasznalonev"),
                 rs.getString("jelszo"),
@@ -45,7 +47,7 @@ public class UserRepository implements CrudRepository<User> {
     }
 
     @Override
-    public User find(int id) {
+    public JobSeeker find(int id) {
         try(Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_ID);
         ) {
@@ -56,7 +58,7 @@ public class UserRepository implements CrudRepository<User> {
         }
     }
 
-    public User findByUsername(String username) {
+    public JobSeeker findByUsername(String username) {
         try(Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_NAME);
         ) {
@@ -67,11 +69,11 @@ public class UserRepository implements CrudRepository<User> {
         }
     }
 
-    private User getUserByQuery(PreparedStatement ps) throws SQLException {
-        User result = null;
+    private JobSeeker getUserByQuery(PreparedStatement ps) throws SQLException {
+        JobSeeker result = null;
         ResultSet rs = ps.executeQuery();
         if(rs.next()) {
-            result = new User(
+            result = new JobSeeker(
                     rs.getInt("allaskeresoID"),
                     rs.getString("felhasznalonev"),
                     rs.getString("jelszo"),
@@ -88,17 +90,17 @@ public class UserRepository implements CrudRepository<User> {
     }
 
     @Override
-    public User save(User entity) {
+    public JobSeeker save(JobSeeker entity) {
         return null;
     }
 
     @Override
-    public User delete(int id) {
+    public JobSeeker delete(int id) {
         return null;
     }
 
     @Override
-    public User delete(User entity) {
+    public JobSeeker delete(JobSeeker entity) {
         return null;
     }
 }
