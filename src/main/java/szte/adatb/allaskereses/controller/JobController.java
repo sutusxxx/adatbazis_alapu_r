@@ -1,8 +1,12 @@
 package szte.adatb.allaskereses.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import szte.adatb.allaskereses.model.Job;
+import szte.adatb.allaskereses.model.JobSeeker;
 import szte.adatb.allaskereses.service.JobService;
+
+import java.util.List;
 
 @RestController
 public class JobController {
@@ -11,5 +15,20 @@ public class JobController {
     @Autowired
     public JobController(JobService service) {
         this.service = service;
+    }
+
+    @GetMapping("/jobs")
+    public List<Job> getJobList() {
+        return service.getJobs();
+    }
+
+    @GetMapping("job/{id}")
+    public Job getJobDetails(@PathVariable("id") int id) {
+        return service.getJobDetails(id);
+    }
+
+    @PutMapping("job/apply/{id}")
+    public void applyJob(@PathVariable("id") int jobId, int jobSeekerId) {
+        service.applyJob(jobId, jobSeekerId);
     }
 }

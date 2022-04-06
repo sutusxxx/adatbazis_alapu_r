@@ -3,25 +3,26 @@ package szte.adatb.allaskereses.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import szte.adatb.allaskereses.model.JobSeeker;
+import szte.adatb.allaskereses.model.LoginForm;
+import szte.adatb.allaskereses.model.RegistrationForm;
 import szte.adatb.allaskereses.repository.JobSeekerRepository;
 
 @Service
-public class LoginService {
+public class AuthService {
 
     private JobSeekerRepository repository;
 
     @Autowired
-    public LoginService(JobSeekerRepository repository) {
+    public AuthService(JobSeekerRepository repository) {
         this.repository = repository;
     }
 
-    public void login(String username, String password) {
-        JobSeeker user = repository.findByUsername(username);
-        if(canLogin(user, password)) {
-            System.out.println("Siker");
-        } else {
-            System.out.println(":(((((");
-        }
+    public void login(LoginForm loginForm) {
+
+    }
+
+    public void registration(RegistrationForm registrationForm) {
+
     }
 
     private boolean canLogin(JobSeeker user, String password) {
