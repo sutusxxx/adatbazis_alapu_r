@@ -2,33 +2,44 @@ package szte.adatb.allaskereses.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import szte.adatb.allaskereses.model.JobSeeker;
-import szte.adatb.allaskereses.model.LoginForm;
-import szte.adatb.allaskereses.model.RegistrationForm;
-import szte.adatb.allaskereses.repository.JobSeekerRepository;
+import szte.adatb.allaskereses.model.*;
+import szte.adatb.allaskereses.repository.UserRepository;
 
 @Service
 public class AuthService {
 
-    private JobSeekerRepository repository;
+    private UserRepository repository;
 
     @Autowired
-    public AuthService(JobSeekerRepository repository) {
+    public AuthService(UserRepository repository) {
         this.repository = repository;
     }
 
-    public void login(LoginForm loginForm) {
+    public JobSeeker loginJobSeeker(LoginForm loginForm) {
+        int id = repository.loginUser(loginForm, "allaskereso");
+        if (id > -1) {
+            return repository.getJobSeeker(id);
+        }
+        return null;
+    }
 
+    public Advertiser loginAdvertiser(LoginForm loginForm) {
+        int id = repository.loginUser(loginForm, "hirdeto");
+        if (id > -1) {
+            return repository.getAdvertiser(id);
+        }
+        return null;
+    }
+
+    public Admin loginAdmin(LoginForm loginForm) {
+        int id = repository.loginUser(loginForm, "admin");
+        if (id > -1) {
+            return repository.getAdmin(id);
+        }
+        return null;
     }
 
     public void registration(RegistrationForm registrationForm) {
 
-    }
-
-    private boolean canLogin(JobSeeker user, String password) {
-        if (user.getPassword().equals(password)) {
-            return true;
-        }
-        return false;
     }
 }

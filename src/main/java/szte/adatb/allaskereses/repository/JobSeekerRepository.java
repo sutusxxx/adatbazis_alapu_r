@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class JobSeekerRepository implements CrudRepository<JobSeeker> {
+public class JobSeekerRepository {
     private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
 
@@ -27,7 +27,6 @@ public class JobSeekerRepository implements CrudRepository<JobSeeker> {
     public static final String SELECT_USER_BY_ID = "SELECT * FROM allaskeresok WHERE allaskeresoID=?";
     public static final String SELECT_USER_BY_NAME = "SELECT * FROM allaskeresok WHERE felhasznalonev=?";
 
-    @Override
     public List<JobSeeker> findAll() {
 
         List<JobSeeker> result = jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new JobSeeker(
@@ -46,7 +45,6 @@ public class JobSeekerRepository implements CrudRepository<JobSeeker> {
         return result;
     }
 
-    @Override
     public JobSeeker find(int id) {
         try(Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_ID);
@@ -89,17 +87,14 @@ public class JobSeekerRepository implements CrudRepository<JobSeeker> {
         return result;
     }
 
-    @Override
     public JobSeeker save(JobSeeker entity) {
         return null;
     }
 
-    @Override
     public JobSeeker delete(int id) {
         return null;
     }
 
-    @Override
     public JobSeeker delete(JobSeeker entity) {
         return null;
     }

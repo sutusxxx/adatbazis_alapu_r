@@ -10,16 +10,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Szekhely {
+public class headquarters {
     private int id;
-    private String megye;
-    private String varos;
-    private String utca;
-    private int hazszam;
-    private int irsz;
+    private String county;
+    private String city;
+    private String street;
+    private int houseNumber;
+    private int zipCode;
 
     @Override
     public String toString() {
-        return this.megye+ " | " + this.varos;
+        return this.county + " | " + this.city;
     }
 }

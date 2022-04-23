@@ -31,4 +31,8 @@ public class JobController {
     public void applyJob(@PathVariable("id") int jobId, int jobSeekerId) {
         service.applyJob(jobId, jobSeekerId);
     }
+
+    public void deleteJob(@PathVariable("jobId") int id, @PathVariable("userId") int userId) {
+        service.deleteJob(id, userId);
+    }
 }

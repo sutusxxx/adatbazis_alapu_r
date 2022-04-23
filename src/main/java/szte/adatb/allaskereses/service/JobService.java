@@ -20,11 +20,19 @@ public class JobService {
         return repository.findAll();
     }
 
+    public List<Job> getJobListForAdvertiser(int userId) {
+        return repository.findAllForUser(userId);
+    }
+
     public Job getJobDetails(int id) {
         return repository.find(id);
     }
 
     public void applyJob(int jobId, int jobSeekerId) {
+        repository.applyJob(jobId, jobSeekerId);
+    }
 
+    public void deleteJob(int id, int userId) {
+        repository.delete(id, userId);
     }
 }

@@ -9,10 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Job {
+public class Advertiser {
     private int id;
-    private String address;
-    private String description;
-    private int advertiserId;
-    private String place;
+    private String username;
+    private String password;
+    private String email;
+    private String phone;
+    private String name;
+    private int companyId;
 }

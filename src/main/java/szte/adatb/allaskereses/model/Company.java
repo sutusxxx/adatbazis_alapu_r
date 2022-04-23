@@ -9,10 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Job {
+public class Company {
     private int id;
-    private String address;
-    private String description;
-    private int advertiserId;
-    private String place;
+    private String name;
+    private String phone;
+    private int hqId;
 }

@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Job {
+public class CV {
     private int id;
-    private String address;
-    private String description;
-    private int advertiserId;
-    private String place;
+    private String introduction;
+    private String experience;
+    private String motivation;
+    private int jobSeekerId;
 }
