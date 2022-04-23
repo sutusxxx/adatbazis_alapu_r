@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Job {
     private int id;
-    private String address;
+    private String name;
     private String description;
     private int advertiserId;
     private String place;

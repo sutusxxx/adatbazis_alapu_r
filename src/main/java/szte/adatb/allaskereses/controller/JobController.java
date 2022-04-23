@@ -7,6 +7,7 @@ import szte.adatb.allaskereses.model.JobSeeker;
 import szte.adatb.allaskereses.service.JobService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class JobController {
@@ -17,8 +18,13 @@ public class JobController {
         this.service = service;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/jobs")
-    public List<Job> getJobList() {
+    public List<Job> getJobList(@RequestParam Optional<Integer> id) {
+        System.out.println("jobs called");
+        if (id.isPresent()) {
+            return service.getJobListForAdvertiser(id.get());
+        }
         return service.getJobs();
     }
 
@@ -32,7 +38,8 @@ public class JobController {
         service.applyJob(jobId, jobSeekerId);
     }
 
-    public void deleteJob(@PathVariable("jobId") int id, @PathVariable("userId") int userId) {
+    @DeleteMapping("/job/delete/{id}")
+    public void deleteJob(@PathVariable("id") int id, @PathVariable("userId") int userId) {
         service.deleteJob(id, userId);
     }
 }

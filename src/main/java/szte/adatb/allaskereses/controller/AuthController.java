@@ -19,7 +19,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public void login(@RequestBody LoginForm loginForm) {
-        service.login(loginForm);
+//        service.login(loginForm);
     }
 
     @PostMapping("/registration")

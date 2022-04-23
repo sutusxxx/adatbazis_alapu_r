@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import szte.adatb.allaskereses.model.Job;
 import szte.adatb.allaskereses.model.JobDetails;
+import szte.adatb.allaskereses.model.JobSeeker;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -20,9 +21,18 @@ public class JobRepository{
         this.dataSource = dataSource;
     }
 
+    public static final String SELECT_ALL = "SELECT * FROM hirdetesek";
+
     public List<Job> findAll() {
-        // Adja vissza az összes állásajánlatot
-        return null;
+        List<Job> result = jdbcTemplate.query(SELECT_ALL, (rs, rowNum) -> new Job(
+                        rs.getInt("hirdetesID"),
+                        rs.getString("cim"),
+                        rs.getString("leiras"),
+                        rs.getInt("hirdetoId"),
+                        rs.getString("helyszin")
+                )
+        );
+        return result;
     }
 
     public List<Job> findAllForUser(int userId) {
