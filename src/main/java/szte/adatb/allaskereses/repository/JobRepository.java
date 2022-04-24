@@ -5,9 +5,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import szte.adatb.allaskereses.model.Job;
 import szte.adatb.allaskereses.model.JobDetails;
-import szte.adatb.allaskereses.model.JobSeeker;
 
 import javax.sql.DataSource;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -36,7 +38,6 @@ public class JobRepository{
     }
 
     public List<Job> findAllForUser(int userId) {
-        // Adja vissza az állásajánlatot a hozzá tartozó userhez
         return null;
     }
 
@@ -51,7 +52,20 @@ public class JobRepository{
     }
 
     public void applyJob(int jobId, int userId) {
-        // Jelenktezés állásajánlatra
+        // PROCEDURE IN apply_for_job
+        try {
+            Connection conn = dataSource.getConnection();
+            CallableStatement stmt = conn.prepareCall(
+                    "{call apply_for_job(?, ?)}"
+            );
+
+            stmt.setInt(1, jobId);
+            stmt.setInt(2, userId);
+
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Job save(Job entity) {

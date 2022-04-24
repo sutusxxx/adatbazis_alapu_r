@@ -3,17 +3,23 @@ package szte.adatb.allaskereses.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import szte.adatb.allaskereses.model.Admin;
-import szte.adatb.allaskereses.model.Advertiser;
-import szte.adatb.allaskereses.model.JobSeeker;
-import szte.adatb.allaskereses.model.LoginForm;
+import szte.adatb.allaskereses.model.*;
 
 import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserRepository {
     private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
+
+    private static final String SELECT_ALL_JS = "SELECT * FROM allaskeresok";
+    private static final String SELECT_APPLICATIONS_FOR_USER = "SELECT cim, hirdetesek.hirdetesID FROM hirdetesek " +
+            "INNER JOIN jelentkezesek ON hirdetesek.hirdetesId = jelentkezesek.hirdetesId WHERE hirdetesek.hirdetesId = ?";
 
     @Autowired
     public UserRepository(JdbcTemplate jdbcTemplate, DataSource dataSource) {
@@ -26,7 +32,7 @@ public class UserRepository {
             // Keressen rá az adott táblában a felhasználónév és jelszóra és nézze meg hogy van-e egyezés
         }
         if (type.equals("allaskereso")) {
-            // Keressen rá az adott táblában a felhasználónév és jelszóra és nézze meg hogy van-e egyezés
+
         }
         if (type.equals("hirdeto")) {
             // Keressen rá az adott táblában a felhasználónév és jelszóra és nézze meg hogy van-e egyezés
@@ -35,9 +41,61 @@ public class UserRepository {
         return -1;
     }
 
-    public JobSeeker getJobSeeker(int id) {
-        // Adja vissza az álláskereső adatait id alapján.
-        return null;
+    public List<JobSeeker> findAllJS() {
+        List<JobSeeker> list = new ArrayList<>();
+        try {
+            Connection conn = dataSource.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(SELECT_ALL_JS);
+            while (rs.next()) {
+                JobSeeker js = new JobSeeker(
+                        rs.getInt("allaskeresoID"),
+                        rs.getString("felhasznalonev"),
+                        rs.getString("jelszo"),
+                        rs.getString("nev"),
+                        rs.getString("vegzettseg"),
+                        rs.getDate("szuldatum"),
+                        rs.getString("nyelvismeret"),
+                        rs.getString("email"),
+                        rs.getString("lakhely"),
+                        rs.getString("telefon")
+                );
+                list.add(js);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public Map<String, String> findApplicationsForUser(int userId) {
+        Map<String, String> result = new HashMap<>();
+        try {
+            Connection conn = dataSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SELECT_APPLICATIONS_FOR_USER);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                result.put(rs.getString("hirdetesID"), rs.getString("cim"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public JobSeeker loginJobSeeker(LoginForm loginForm) {
+        JobSeeker result = null;
+        List<JobSeeker> list = findAllJS();
+        for (JobSeeker js : list) {
+            if (js.getUsername().equals(loginForm.username) && js.getPassword().equals(loginForm.password)) {
+                result = js;
+            }
+        }
+        if (result != null) {
+
+        }
+        return result;
     }
 
     public Advertiser getAdvertiser(int id) {

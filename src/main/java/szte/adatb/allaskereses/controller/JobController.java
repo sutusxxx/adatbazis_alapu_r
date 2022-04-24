@@ -33,8 +33,8 @@ public class JobController {
         return service.getJobDetails(id);
     }
 
-    @PutMapping("job/apply/{id}")
-    public void applyJob(@PathVariable("id") int jobId, int jobSeekerId) {
+    @PutMapping("job/apply")
+    public void applyJob(@RequestParam(name = "job") int jobId, @RequestParam(name = "user") int jobSeekerId) {
         service.applyJob(jobId, jobSeekerId);
     }
 

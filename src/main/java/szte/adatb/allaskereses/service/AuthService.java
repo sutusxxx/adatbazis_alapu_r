@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import szte.adatb.allaskereses.model.*;
 import szte.adatb.allaskereses.repository.UserRepository;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class AuthService {
 
@@ -16,11 +19,12 @@ public class AuthService {
     }
 
     public JobSeeker loginJobSeeker(LoginForm loginForm) {
-        int id = repository.loginUser(loginForm, "allaskereso");
-        if (id > -1) {
-            return repository.getJobSeeker(id);
+        JobSeeker jobSeeker = repository.loginJobSeeker(loginForm);
+        if (jobSeeker != null) {
+            Map<String, String> applications = repository.findApplicationsForUser(jobSeeker.getId());
+            jobSeeker.setApplications(applications);
         }
-        return null;
+        return jobSeeker;
     }
 
     public Advertiser loginAdvertiser(LoginForm loginForm) {

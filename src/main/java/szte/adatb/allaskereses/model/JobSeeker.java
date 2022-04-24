@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -21,7 +23,7 @@ public class JobSeeker {
     private String email;
     private String address;
     private String phone;
-    private Set<Job> applications;
+    private Map<String, String> applications;
 
     public JobSeeker(int id, String username, String password, String name, String education, Date dateOfBirth, String language, String email, String address, String phone) {
         this.id = id;
