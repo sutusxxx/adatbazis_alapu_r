@@ -36,9 +36,10 @@ public class JobController {
         return service.getJobDetails(id);
     }
 
-//    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("job/create")
     public void createJob(@RequestBody CreateJob job) {
+        System.out.println("createJob called");
         service.createJob(job);
     }
 
