@@ -3,6 +3,7 @@ package szte.adatb.allaskereses.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import szte.adatb.allaskereses.model.Job;
+import szte.adatb.allaskereses.model.JobDetails;
 import szte.adatb.allaskereses.model.JobSeeker;
 import szte.adatb.allaskereses.service.JobService;
 
@@ -28,8 +29,10 @@ public class JobController {
         return service.getJobs();
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("job/{id}")
-    public Job getJobDetails(@PathVariable("id") int id) {
+    public JobDetails getJobDetails(@PathVariable("id") int id) {
+        System.out.println("jobDetails called");
         return service.getJobDetails(id);
     }
 

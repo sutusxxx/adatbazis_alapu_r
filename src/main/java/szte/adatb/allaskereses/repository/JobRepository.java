@@ -7,15 +7,17 @@ import szte.adatb.allaskereses.model.Job;
 import szte.adatb.allaskereses.model.JobDetails;
 
 import javax.sql.DataSource;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 @Repository
 public class JobRepository{
     private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
+
+    private final String SELECT_JOB_DETAILS = "SELECT hirdetesID, cim, leiras, helyszin, hirdetok.nev AS hirdeto_nev, email, " +
+            "hirdetok.telefon AS hirdeto_telefon, cegek.nev AS ceg_nev FROM hirdetesek INNER JOIN hirdetok ON hirdetesek.hirdetoID = hirdetok.hirdetoID " +
+            "INNER JOIN cegek ON cegek.cegID = hirdetok.cegID WHERE hirdetesID = ?";
 
     @Autowired
     public JobRepository(JdbcTemplate jdbcTemplate, DataSource dataSource) {
@@ -48,7 +50,27 @@ public class JobRepository{
 
     public JobDetails getJobDetails(int id) {
         // Adja vissza az állásajánlatot a cég nevével és az álláskereső adataival (Jobdetails mezők).
-        return null;
+        JobDetails jd = null;
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(SELECT_JOB_DETAILS);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                jd = new JobDetails(
+                        rs.getInt("hirdetesID"),
+                        rs.getString("cim"),
+                        rs.getString("leiras"),
+                        rs.getString("helyszin"),
+                        rs.getString("ceg_nev"),
+                        rs.getString("hirdeto_nev"),
+                        rs.getString("email"),
+                        rs.getString("hirdeto_telefon")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return jd;
     }
 
     public void applyJob(int jobId, int userId) {

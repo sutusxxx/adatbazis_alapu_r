@@ -1,8 +1,17 @@
 package szte.adatb.allaskereses.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class JobDetails {
     private int id;
-    private String address;
+    private String name;
     private String description;
     private String place;
     private String companyName;

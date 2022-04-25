@@ -3,6 +3,7 @@ package szte.adatb.allaskereses.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import szte.adatb.allaskereses.model.Job;
+import szte.adatb.allaskereses.model.JobDetails;
 import szte.adatb.allaskereses.repository.JobRepository;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class JobService {
         return repository.findAllForUser(userId);
     }
 
-    public Job getJobDetails(int id) {
-        return repository.find(id);
+    public JobDetails getJobDetails(int id) {
+        return repository.getJobDetails(id);
     }
 
     public void applyJob(int jobId, int jobSeekerId) {
