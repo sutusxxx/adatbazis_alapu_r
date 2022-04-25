@@ -123,8 +123,7 @@ public class JobRepository{
             stmt.setInt(3, entity.getAdvertiserId());
             stmt.setString(4, entity.getPlace());
 
-//            Array array = conn.createArrayOf("VARCHAR", entity.getWorkTypes().toArray());
-//            stmt.setArray(5, array);
+
 
             stmt.execute();
         } catch (SQLException e) {

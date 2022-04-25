@@ -28,20 +28,6 @@ public class UserRepository {
         this.dataSource = dataSource;
     }
 
-    public int loginUser(LoginForm loginForm, String type) {
-        if (type.equals("admin")) {
-            // Keressen rá az adott táblában a felhasználónév és jelszóra és nézze meg hogy van-e egyezés
-        }
-        if (type.equals("allaskereso")) {
-
-        }
-        if (type.equals("hirdeto")) {
-            // Keressen rá az adott táblában a felhasználónév és jelszóra és nézze meg hogy van-e egyezés
-        }
-        // Ha van egyezés akkor az id-val térjen vissza
-        return -1;
-    }
-
     public List<JobSeeker> findAllJS() {
         List<JobSeeker> list = new ArrayList<>();
         try {
@@ -132,6 +118,14 @@ public class UserRepository {
             }
         }
         return result;
+    }
+
+    public void createJobSeeker(CreateJobSeeker jobSeeker) {
+
+    }
+
+    public void createAdvertiser(CreateAdvertiser advertiser) {
+
     }
 
     public Advertiser getAdvertiser(int id) {

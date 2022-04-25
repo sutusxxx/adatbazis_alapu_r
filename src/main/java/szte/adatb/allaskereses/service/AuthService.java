@@ -33,14 +33,14 @@ public class AuthService {
     }
 
     public Admin loginAdmin(LoginForm loginForm) {
-        int id = repository.loginUser(loginForm, "admin");
-        if (id > -1) {
-            return repository.getAdmin(id);
-        }
         return null;
     }
 
-    public void registration(RegistrationForm registrationForm) {
+    public void registrationForJobSeeker(CreateJobSeeker jobSeeker) {
+        repository.createJobSeeker(jobSeeker);
+    }
 
+    public void registrationForAdvertiser(CreateAdvertiser advertiser) {
+        repository.createAdvertiser(advertiser);
     }
 }

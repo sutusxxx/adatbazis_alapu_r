@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import szte.adatb.allaskereses.model.Advertiser;
-import szte.adatb.allaskereses.model.JobSeeker;
-import szte.adatb.allaskereses.model.LoginForm;
-import szte.adatb.allaskereses.model.RegistrationForm;
+import szte.adatb.allaskereses.model.*;
 import szte.adatb.allaskereses.service.AuthService;
 
 @RestController
@@ -34,8 +31,13 @@ public class AuthController {
         return service.loginAdvertiser(loginForm);
     }
 
-    @PostMapping("/registration")
-    public void registration(@RequestBody RegistrationForm registrationForm) {
-        service.registration(registrationForm);
+    @PostMapping("/registration/jobseeker")
+    public void registrationForJobSeeker(@RequestBody CreateJobSeeker jobSeeker) {
+        service.registrationForJobSeeker(jobSeeker);
+    }
+
+    @PostMapping("/registration/advertiser")
+    public void registrationForAdvertiser(@RequestBody CreateAdvertiser advertiser) {
+        service.registrationForAdvertiser(advertiser);
     }
 }
