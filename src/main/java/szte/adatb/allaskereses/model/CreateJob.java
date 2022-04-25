@@ -11,10 +11,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Job {
-    private int id;
+public class CreateJob {
     private String name;
     private String description;
     private int advertiserId;
     private String place;
+    private List<String> workTypes;
 }

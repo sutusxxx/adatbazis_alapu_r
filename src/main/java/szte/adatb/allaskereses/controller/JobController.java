@@ -2,9 +2,9 @@ package szte.adatb.allaskereses.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import szte.adatb.allaskereses.model.CreateJob;
 import szte.adatb.allaskereses.model.Job;
 import szte.adatb.allaskereses.model.JobDetails;
-import szte.adatb.allaskereses.model.JobSeeker;
 import szte.adatb.allaskereses.service.JobService;
 
 import java.util.List;
@@ -36,13 +36,21 @@ public class JobController {
         return service.getJobDetails(id);
     }
 
+//    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("job/create")
+    public void createJob(@RequestBody CreateJob job) {
+        service.createJob(job);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("job/apply")
     public void applyJob(@RequestParam(name = "job") int jobId, @RequestParam(name = "user") int jobSeekerId) {
         service.applyJob(jobId, jobSeekerId);
     }
 
-    @DeleteMapping("/job/delete/{id}")
-    public void deleteJob(@PathVariable("id") int id, @PathVariable("userId") int userId) {
+    @CrossOrigin(origins = "http://localhost:4200")
+    @DeleteMapping("/job/delete")
+    public void deleteJob(@RequestParam(name = "job") int id, @RequestParam(name = "user") int userId) {
         service.deleteJob(id, userId);
     }
 }

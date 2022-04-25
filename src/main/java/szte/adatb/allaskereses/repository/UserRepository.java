@@ -20,6 +20,7 @@ public class UserRepository {
     private static final String SELECT_ALL_JS = "SELECT * FROM allaskeresok";
     private static final String SELECT_APPLICATIONS_FOR_USER = "SELECT cim, hirdetesek.hirdetesID FROM hirdetesek " +
             "INNER JOIN jelentkezesek ON hirdetesek.hirdetesId = jelentkezesek.hirdetesId WHERE hirdetesek.hirdetesId = ?";
+    private static final String SELECT_ALL_AT = "SELECT * FROM hirdetok";
 
     @Autowired
     public UserRepository(JdbcTemplate jdbcTemplate, DataSource dataSource) {
@@ -68,6 +69,30 @@ public class UserRepository {
         return list;
     }
 
+    public List<Advertiser> findAllAT() {
+        List<Advertiser> list = new ArrayList<>();
+        try {
+            Connection conn = dataSource.getConnection();
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(SELECT_ALL_AT);
+            while (rs.next()) {
+                Advertiser at = new Advertiser(
+                        rs.getInt("hirdetoID"),
+                        rs.getString("felhasznalonev"),
+                        rs.getString("jelszo"),
+                        rs.getString("email"),
+                        rs.getString("telefon"),
+                        rs.getString("nev"),
+                        rs.getInt("cegID")
+                );
+                list.add(at);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public Map<String, String> findApplicationsForUser(int userId) {
         Map<String, String> result = new HashMap<>();
         try {
@@ -90,10 +115,21 @@ public class UserRepository {
         for (JobSeeker js : list) {
             if (js.getUsername().equals(loginForm.username) && js.getPassword().equals(loginForm.password)) {
                 result = js;
+                System.out.println(loginForm.username);
+                System.out.println(loginForm.password);
             }
         }
-        if (result != null) {
+        return result;
+    }
 
+    public Advertiser loginAdvertiser(LoginForm loginForm) {
+        Advertiser result = null;
+        List<Advertiser> list = findAllAT();
+        for (Advertiser at : list) {
+            if (at.getUsername().equals(loginForm.username) && at.getPassword().equals(loginForm.password)) {
+                result = at;
+                System.out.println(at);
+            }
         }
         return result;
     }

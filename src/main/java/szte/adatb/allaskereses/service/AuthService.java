@@ -28,11 +28,8 @@ public class AuthService {
     }
 
     public Advertiser loginAdvertiser(LoginForm loginForm) {
-        int id = repository.loginUser(loginForm, "hirdeto");
-        if (id > -1) {
-            return repository.getAdvertiser(id);
-        }
-        return null;
+        Advertiser advertiser = repository.loginAdvertiser(loginForm);
+        return advertiser;
     }
 
     public Admin loginAdmin(LoginForm loginForm) {
