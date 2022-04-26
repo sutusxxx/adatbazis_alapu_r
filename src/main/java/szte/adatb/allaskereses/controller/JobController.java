@@ -22,7 +22,7 @@ public class JobController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/jobs")
     public List<Job> getJobList(@RequestParam Optional<Integer> id) {
-        System.out.println("jobs called");
+        System.out.println("getJobList called");
         if (id.isPresent()) {
             return service.getJobListForAdvertiser(id.get());
         }
@@ -32,26 +32,28 @@ public class JobController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("job/{id}")
     public JobDetails getJobDetails(@PathVariable("id") int id) {
-        System.out.println("jobDetails called");
+        System.out.println("getJobDetails called");
         return service.getJobDetails(id);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("jobs/create")
-    public void createJob(@RequestBody CreateJob job) {
+    public boolean createJob(@RequestBody CreateJob job) {
         System.out.println("createJob called");
-        service.createJob(job);
+        return service.createJob(job);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PutMapping("job/apply")
-    public void applyJob(@RequestParam(name = "job") int jobId, @RequestParam(name = "user") int jobSeekerId) {
-        service.applyJob(jobId, jobSeekerId);
+    @GetMapping("job/apply")
+    public boolean applyJob(@RequestParam(name = "job") int id, @RequestParam(name = "user") int userId) {
+        System.out.println("applyJob called");
+        return service.applyJob(id, userId);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/job/delete")
-    public void deleteJob(@RequestParam(name = "job") int id, @RequestParam(name = "user") int userId) {
-        service.deleteJob(id, userId);
+    public boolean deleteJob(@RequestParam(name = "job") int id, @RequestParam(name = "user") int userId) {
+        System.out.println("deleteJob called");
+        return service.deleteJob(id, userId);
     }
 }

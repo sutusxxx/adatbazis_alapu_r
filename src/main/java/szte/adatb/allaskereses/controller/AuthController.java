@@ -31,13 +31,16 @@ public class AuthController {
         return service.loginAdvertiser(loginForm);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/registration/jobseeker")
     public void registrationForJobSeeker(@RequestBody CreateJobSeeker jobSeeker) {
+        System.out.println("Regisztráció álláskeresőként");
         service.registrationForJobSeeker(jobSeeker);
     }
 
     @PostMapping("/registration/advertiser")
     public void registrationForAdvertiser(@RequestBody CreateAdvertiser advertiser) {
+        System.out.println("Regisztráció hirdetőként");
         service.registrationForAdvertiser(advertiser);
     }
 }

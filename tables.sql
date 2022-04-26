@@ -413,12 +413,8 @@ END;
 CREATE OR REPLACE TRIGGER delete_children
 BEFORE DELETE ON hirdetesek
 FOR EACH ROW
-DECLARE
-pragma autonomous_transaction;
 BEGIN
-    DELETE FROM jelentkezesek WHERE hirdetesID = :NEW.hirdetesID;
     DELETE FROM hirdetes_jellege WHERE hirdetesID = :NEW.hirdetesID;
-    commit;
 END;
 
 CREATE OR REPLACE TRIGGER output_on_action

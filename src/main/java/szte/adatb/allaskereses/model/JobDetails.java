@@ -20,5 +20,6 @@ public class JobDetails {
     private String advertiserName;
     private String advertiserEmail;
     private String advertiserPhone;
+    private int advertiserId;
     private List<String> workType;
 }

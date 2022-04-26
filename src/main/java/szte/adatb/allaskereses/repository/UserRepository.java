@@ -120,7 +120,7 @@ public class UserRepository {
         return result;
     }
 
-    public void createJobSeeker(CreateJobSeeker jobSeeker) {
+    public boolean createJobSeeker(CreateJobSeeker jobSeeker) {
         try {
             Connection conn = dataSource.getConnection();
             CallableStatement stmt = conn.prepareCall(
@@ -138,13 +138,16 @@ public class UserRepository {
             stmt.setString(9, jobSeeker.getPhone());
 
             stmt.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void createAdvertiser(CreateAdvertiser advertiser) {
+    public boolean createAdvertiser(CreateAdvertiser advertiser) {
         System.out.println(advertiser.getName());
+        return false;
     }
 
     public Advertiser getAdvertiser(int id) {

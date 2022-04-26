@@ -18,7 +18,7 @@ public class JobRepository{
     private DataSource dataSource;
 
     private final String SELECT_JOB_DETAILS = "SELECT hirdetesID, cim, leiras, helyszin, hirdetok.nev AS hirdeto_nev, email, " +
-            "hirdetok.telefon AS hirdeto_telefon, cegek.nev AS ceg_nev FROM hirdetesek INNER JOIN hirdetok ON hirdetesek.hirdetoID = hirdetok.hirdetoID " +
+            "hirdetok.telefon AS hirdeto_telefon, cegek.nev AS ceg_nev, hirdetok.hirdetoID AS hirdeto FROM hirdetesek INNER JOIN hirdetok ON hirdetesek.hirdetoID = hirdetok.hirdetoID " +
             "INNER JOIN cegek ON cegek.cegID = hirdetok.cegID WHERE hirdetesID = ?";
     private final String SELECT_WORK_TYPES = "SELECT munka_jellege.megnevezes AS munka FROM munka_jellege INNER JOIN hirdetes_jellege ON munka_jellege.munkaID = hirdetes_jellege.munkaID WHERE hirdetes_jellege.hirdetesID = ?";
 
@@ -69,6 +69,7 @@ public class JobRepository{
                         rs.getString("hirdeto_nev"),
                         rs.getString("email"),
                         rs.getString("hirdeto_telefon"),
+                        rs.getInt("hirdeto"),
                         null
                 );
             }
@@ -93,7 +94,7 @@ public class JobRepository{
         return result;
     }
 
-    public void applyJob(int jobId, int userId) {
+    public boolean applyJob(int jobId, int userId) {
         // PROCEDURE IN apply_for_job
         try {
             Connection conn = dataSource.getConnection();
@@ -105,12 +106,14 @@ public class JobRepository{
             stmt.setInt(2, userId);
 
             stmt.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void create(CreateJob entity) {
+    public boolean create(CreateJob entity) {
         // PROCEDURE IN create_job
         try {
             Connection conn = dataSource.getConnection();
@@ -124,20 +127,21 @@ public class JobRepository{
             stmt.setString(4, entity.getPlace());
 
 
-
             stmt.execute();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void delete(int jobId, int userId) {
+    public boolean delete(int jobId, int userId) {
         // FUNCTION IN can_delete_job
         try {
             Connection conn = dataSource.getConnection();
-            CallableStatement stmt = conn.prepareCall(
-                    "{call ? = can_delete_job(?, ?)}"
-            );
+//            CallableStatement stmt = conn.prepareCall(
+//                    "{call ? = can_delete_job(?, ?)}"
+//            );
 //            stmt.registerOutParameter(1, Types.INTEGER);
 //            stmt.setInt(2, jobId);
 //            stmt.setInt(3, userId);
@@ -150,9 +154,12 @@ public class JobRepository{
                 PreparedStatement ps = conn.prepareStatement(DELETE_JOB);
                 ps.setInt(1, jobId);
                 ps.execute();
+                return true;
             }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

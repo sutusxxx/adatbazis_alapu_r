@@ -35,15 +35,15 @@ public class JobService {
         return jd;
     }
 
-    public void createJob(CreateJob job) {
-        this.repository.create(job);
+    public boolean createJob(CreateJob job) {
+        return this.repository.create(job);
     }
 
-    public void applyJob(int jobId, int jobSeekerId) {
-        this.repository.applyJob(jobId, jobSeekerId);
+    public boolean applyJob(int jobId, int jobSeekerId) {
+        return this.repository.applyJob(jobId, jobSeekerId);
     }
 
-    public void deleteJob(int id, int userId) {
-        this.repository.delete(id, userId);
+    public boolean deleteJob(int id, int userId) {
+        return this.repository.delete(id, userId);
     }
 }
