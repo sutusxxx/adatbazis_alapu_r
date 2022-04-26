@@ -121,11 +121,30 @@ public class UserRepository {
     }
 
     public void createJobSeeker(CreateJobSeeker jobSeeker) {
+        try {
+            Connection conn = dataSource.getConnection();
+            CallableStatement stmt = conn.prepareCall(
+                    "{call allaskereso_create(?, ?, ?, ?, ?, ?, ?, ?, ?)}"
+            );
 
+            stmt.setString(1, jobSeeker.getUsername());
+            stmt.setString(2, jobSeeker.getPassword());
+            stmt.setString(3, jobSeeker.getName());
+            stmt.setString(4, jobSeeker.getEducation());
+            stmt.setDate(5, new Date(jobSeeker.getDateOfBirth().getTime()));
+            stmt.setString(6, jobSeeker.getLanguage());
+            stmt.setString(7, jobSeeker.getEmail());
+            stmt.setString(8, jobSeeker.getAddress());
+            stmt.setString(9, jobSeeker.getPhone());
+
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createAdvertiser(CreateAdvertiser advertiser) {
-
+        System.out.println(advertiser.getName());
     }
 
     public Advertiser getAdvertiser(int id) {

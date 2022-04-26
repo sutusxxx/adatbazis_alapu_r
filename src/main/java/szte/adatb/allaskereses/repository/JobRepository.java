@@ -138,17 +138,18 @@ public class JobRepository{
             CallableStatement stmt = conn.prepareCall(
                     "{call ? = can_delete_job(?, ?)}"
             );
-            stmt.registerOutParameter(1, Types.INTEGER);
-            stmt.setInt(2, jobId);
-            stmt.setInt(3, userId);
+//            stmt.registerOutParameter(1, Types.INTEGER);
+//            stmt.setInt(2, jobId);
+//            stmt.setInt(3, userId);
 
-            stmt.execute();
-            int bool = stmt.getInt(1);
+//            stmt.execute();
+//            int bool = stmt.getInt(1);
+            int bool = 1;
             if (bool == 1) {
                 System.out.printf("Delete job with id: " + jobId);
-//                PreparedStatement ps = conn.prepareStatement(DELETE_JOB);
-//                ps.setInt(1, jobId);
-//                ps.execute();
+                PreparedStatement ps = conn.prepareStatement(DELETE_JOB);
+                ps.setInt(1, jobId);
+                ps.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
