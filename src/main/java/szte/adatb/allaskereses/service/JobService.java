@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import szte.adatb.allaskereses.model.CreateJob;
 import szte.adatb.allaskereses.model.Job;
 import szte.adatb.allaskereses.model.JobDetails;
+import szte.adatb.allaskereses.model.UpdateJob;
 import szte.adatb.allaskereses.repository.JobRepository;
 
 import java.util.List;
@@ -26,6 +27,10 @@ public class JobService {
         return this.repository.findAllForUser(userId);
     }
 
+    public Job getJob(int id) {
+        return this.repository.getJob(id);
+    }
+
     public JobDetails getJobDetails(int id) {
         JobDetails jd = this.repository.getJobDetails(id);
         if (jd != null) {
@@ -37,6 +42,10 @@ public class JobService {
 
     public boolean createJob(CreateJob job) {
         return this.repository.create(job);
+    }
+
+    public boolean updateJob(UpdateJob job) {
+        return this.repository.update(job);
     }
 
     public boolean applyJob(int jobId, int jobSeekerId) {

@@ -36,8 +36,8 @@ public class AuthService {
         return null;
     }
 
-    public void registrationForJobSeeker(CreateJobSeeker jobSeeker) {
-        repository.createJobSeeker(jobSeeker);
+    public boolean registrationForJobSeeker(CreateJobSeeker jobSeeker) {
+        return repository.createJobSeeker(jobSeeker);
     }
 
     public void registrationForAdvertiser(CreateAdvertiser advertiser) {

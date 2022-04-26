@@ -16,5 +16,5 @@ public class CreateJob {
     private String description;
     private int advertiserId;
     private String place;
-    private String workTypes;
+    private String workType;
 }

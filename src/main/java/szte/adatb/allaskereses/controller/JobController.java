@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import szte.adatb.allaskereses.model.CreateJob;
 import szte.adatb.allaskereses.model.Job;
 import szte.adatb.allaskereses.model.JobDetails;
+import szte.adatb.allaskereses.model.UpdateJob;
 import szte.adatb.allaskereses.service.JobService;
 
 import java.util.List;
@@ -31,6 +32,13 @@ public class JobController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("job/{id}")
+    public Job getJob(@PathVariable("id") int id) {
+        System.out.println("getJob called");
+        return service.getJob(id);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("jobDetail/{id}")
     public JobDetails getJobDetails(@PathVariable("id") int id) {
         System.out.println("getJobDetails called");
         return service.getJobDetails(id);
@@ -41,6 +49,13 @@ public class JobController {
     public boolean createJob(@RequestBody CreateJob job) {
         System.out.println("createJob called");
         return service.createJob(job);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("jobs/update")
+    public boolean updateJob(@RequestBody UpdateJob job) {
+        System.out.println("updateJob called");
+        return service.updateJob(job);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")

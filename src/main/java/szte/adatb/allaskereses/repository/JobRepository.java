@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import szte.adatb.allaskereses.model.CreateJob;
 import szte.adatb.allaskereses.model.Job;
 import szte.adatb.allaskereses.model.JobDetails;
+import szte.adatb.allaskereses.model.UpdateJob;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,6 +18,7 @@ public class JobRepository{
     private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
 
+    private final String SELECT_JOB = "SELECT * FROM hirdetesek WHERE hirdetesID = ?";
     private final String SELECT_JOB_DETAILS = "SELECT hirdetesID, cim, leiras, helyszin, hirdetok.nev AS hirdeto_nev, email, " +
             "hirdetok.telefon AS hirdeto_telefon, cegek.nev AS ceg_nev, hirdetok.hirdetoID AS hirdeto FROM hirdetesek INNER JOIN hirdetok ON hirdetesek.hirdetoID = hirdetok.hirdetoID " +
             "INNER JOIN cegek ON cegek.cegID = hirdetok.cegID WHERE hirdetesID = ?";
@@ -50,6 +52,27 @@ public class JobRepository{
     public Job find(int id) {
         // Adja vissza az állásajánlatot a megfelelő ID-ra
         return null;
+    }
+
+    public Job getJob(int id) {
+        Job job = null;
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(SELECT_JOB);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                job = new Job(
+                        rs.getInt("hirdetesID"),
+                        rs.getString("cim"),
+                        rs.getString("leiras"),
+                        rs.getInt("hirdetoID"),
+                        rs.getString("helyszin")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return job;
     }
 
     public JobDetails getJobDetails(int id) {
@@ -133,6 +156,10 @@ public class JobRepository{
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean update(UpdateJob entity) {
+        return false;
     }
 
     public boolean delete(int jobId, int userId) {

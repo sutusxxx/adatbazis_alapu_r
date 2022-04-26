@@ -33,9 +33,9 @@ public class AuthController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/registration/jobseeker")
-    public void registrationForJobSeeker(@RequestBody CreateJobSeeker jobSeeker) {
+    public boolean registrationForJobSeeker(@RequestBody CreateJobSeeker jobSeeker) {
         System.out.println("Regisztráció álláskeresőként");
-        service.registrationForJobSeeker(jobSeeker);
+        return service.registrationForJobSeeker(jobSeeker);
     }
 
     @PostMapping("/registration/advertiser")
