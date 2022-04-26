@@ -3,6 +3,7 @@ package szte.adatb.allaskereses.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import szte.adatb.allaskereses.model.Advertiser;
 import szte.adatb.allaskereses.model.JobSeeker;
 import szte.adatb.allaskereses.service.SettingsService;
 
@@ -17,6 +18,11 @@ public class SettingsController {
 
     @PostMapping("/jobSeeker/update")
     public void updateJobSeeker(JobSeeker jobSeeker) {
+
+    }
+
+    @PostMapping("/advertiser/update")
+    public void updateAdvertiser(Advertiser advertiser) {
 
     }
 }

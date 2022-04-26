@@ -21,6 +21,7 @@ public class UserRepository {
     private static final String SELECT_APPLICATIONS_FOR_USER = "SELECT cim, hirdetesek.hirdetesID FROM hirdetesek " +
             "INNER JOIN jelentkezesek ON hirdetesek.hirdetesId = jelentkezesek.hirdetesId WHERE hirdetesek.hirdetesId = ?";
     private static final String SELECT_ALL_AT = "SELECT * FROM hirdetok";
+    private static final String SELECT_USER_BY_ID = "SELECT * FROM allaskeresok WHERE allaskeresoID=?";
 
     @Autowired
     public UserRepository(JdbcTemplate jdbcTemplate, DataSource dataSource) {
@@ -30,9 +31,9 @@ public class UserRepository {
 
     public List<JobSeeker> findAllJS() {
         List<JobSeeker> list = new ArrayList<>();
-        try {
-            Connection conn = dataSource.getConnection();
-            Statement statement = conn.createStatement();
+        try (Connection conn = dataSource.getConnection();
+             Statement statement = conn.createStatement()) {
+
             ResultSet rs = statement.executeQuery(SELECT_ALL_JS);
             while (rs.next()) {
                 JobSeeker js = new JobSeeker(
@@ -57,9 +58,9 @@ public class UserRepository {
 
     public List<Advertiser> findAllAT() {
         List<Advertiser> list = new ArrayList<>();
-        try {
-            Connection conn = dataSource.getConnection();
-            Statement statement = conn.createStatement();
+        try (Connection conn = dataSource.getConnection();
+             Statement statement = conn.createStatement()) {
+
             ResultSet rs = statement.executeQuery(SELECT_ALL_AT);
             while (rs.next()) {
                 Advertiser at = new Advertiser(
@@ -79,11 +80,37 @@ public class UserRepository {
         return list;
     }
 
+    public JobSeeker findJobSeeker(int id) {
+        JobSeeker result = null;
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_ID);
+        ) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                result = new JobSeeker(
+                        rs.getInt("allaskeresoID"),
+                        rs.getString("felhasznalonev"),
+                        rs.getString("jelszo"),
+                        rs.getString("nev"),
+                        rs.getString("vegzettseg"),
+                        rs.getDate("szuldatum"),
+                        rs.getString("nyelvismeret"),
+                        rs.getString("email"),
+                        rs.getString("lakhely"),
+                        rs.getString("telefon")
+                );
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Map<String, String> findApplicationsForUser(int userId) {
         Map<String, String> result = new HashMap<>();
-        try {
-            Connection conn = dataSource.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(SELECT_APPLICATIONS_FOR_USER);
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_APPLICATIONS_FOR_USER)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
@@ -121,12 +148,8 @@ public class UserRepository {
     }
 
     public boolean createJobSeeker(CreateJobSeeker jobSeeker) {
-        try {
-            Connection conn = dataSource.getConnection();
-            CallableStatement stmt = conn.prepareCall(
-                    "{call allaskereso_create(?, ?, ?, ?, ?, ?, ?, ?, ?)}"
-            );
-
+        try (Connection conn = dataSource.getConnection();
+             CallableStatement stmt = conn.prepareCall("{call allaskereso_create(?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
             stmt.setString(1, jobSeeker.getUsername());
             stmt.setString(2, jobSeeker.getPassword());
             stmt.setString(3, jobSeeker.getName());
@@ -146,8 +169,21 @@ public class UserRepository {
     }
 
     public boolean createAdvertiser(CreateAdvertiser advertiser) {
-        System.out.println(advertiser.getName());
-        return false;
+        try (Connection conn = dataSource.getConnection();
+             CallableStatement stmt = conn.prepareCall("{call hirdeto_create(?, ?, ?, ?, ?, ?)}")) {
+            stmt.setString(1, advertiser.getUsername());
+            stmt.setString(2, advertiser.getPassword());
+            stmt.setString(3, advertiser.getEmail());
+            stmt.setString(5, advertiser.getName());
+            stmt.setString(4, advertiser.getPhone());
+            stmt.setInt(6,1);
+
+            stmt.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public Advertiser getAdvertiser(int id) {

@@ -56,8 +56,8 @@ public class JobRepository{
 
     public Job getJob(int id) {
         Job job = null;
-        try (Connection conn = dataSource.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(SELECT_JOB);
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_JOB)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -78,8 +78,9 @@ public class JobRepository{
     public JobDetails getJobDetails(int id) {
         // Adja vissza az állásajánlatot a cég nevével és az álláskereső adataival (Jobdetails mezők).
         JobDetails jd = null;
-        try (Connection conn = dataSource.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(SELECT_JOB_DETAILS);
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_JOB_DETAILS)) {
+
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -104,8 +105,8 @@ public class JobRepository{
 
     public List<String> getWorkTypesForJob(int id) {
         List<String> result = new ArrayList<>();
-        try (Connection conn = dataSource.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(SELECT_WORK_TYPES);
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_WORK_TYPES)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
@@ -119,16 +120,15 @@ public class JobRepository{
 
     public boolean applyJob(int jobId, int userId) {
         // PROCEDURE IN apply_for_job
-        try {
-            Connection conn = dataSource.getConnection();
-            CallableStatement stmt = conn.prepareCall(
-                    "{call apply_for_job(?, ?)}"
-            );
-
+        try (Connection conn = dataSource.getConnection();
+             CallableStatement stmt = conn.prepareCall(
+                     "{call apply_for_job(?, ?)}"
+             )){
             stmt.setInt(1, jobId);
             stmt.setInt(2, userId);
 
             stmt.execute();
+            System.out.println("applyJob sql success");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -138,18 +138,12 @@ public class JobRepository{
 
     public boolean create(CreateJob entity) {
         // PROCEDURE IN create_job
-        try {
-            Connection conn = dataSource.getConnection();
-            CallableStatement stmt = conn.prepareCall(
-                    "{call create_job(?, ?, ?, ?)}"
-            );
-
+        try(Connection conn = dataSource.getConnection();
+            CallableStatement stmt = conn.prepareCall("{call create_job(?, ?, ?, ?)}")) {
             stmt.setString(1, entity.getName());
             stmt.setString(2, entity.getDescription());
             stmt.setInt(3, entity.getAdvertiserId());
             stmt.setString(4, entity.getPlace());
-
-
             stmt.execute();
             return true;
         } catch (SQLException e) {
@@ -164,8 +158,7 @@ public class JobRepository{
 
     public boolean delete(int jobId, int userId) {
         // FUNCTION IN can_delete_job
-        try {
-            Connection conn = dataSource.getConnection();
+        try (Connection conn = dataSource.getConnection()) {
 //            CallableStatement stmt = conn.prepareCall(
 //                    "{call ? = can_delete_job(?, ?)}"
 //            );

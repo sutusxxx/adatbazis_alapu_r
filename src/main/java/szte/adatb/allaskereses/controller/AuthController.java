@@ -38,6 +38,7 @@ public class AuthController {
         return service.registrationForJobSeeker(jobSeeker);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/registration/advertiser")
     public void registrationForAdvertiser(@RequestBody CreateAdvertiser advertiser) {
         System.out.println("Regisztráció hirdetőként");

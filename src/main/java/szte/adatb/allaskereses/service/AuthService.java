@@ -40,7 +40,7 @@ public class AuthService {
         return repository.createJobSeeker(jobSeeker);
     }
 
-    public void registrationForAdvertiser(CreateAdvertiser advertiser) {
-        repository.createAdvertiser(advertiser);
+    public boolean registrationForAdvertiser(CreateAdvertiser advertiser) {
+        return repository.createAdvertiser(advertiser);
     }
 }
