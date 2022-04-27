@@ -1,4 +1,4 @@
-package szte.adatb.allaskereses.model;
+package szte.adatb.allaskereses.model.job;
 
 public class UpdateJob {
     private String id;

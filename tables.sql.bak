@@ -320,6 +320,25 @@ BEGIN
             education, dateOfBirth, know_language, email, address, phone);
 END; 
 
+create or replace PROCEDURE hirdeto_create (
+    username IN hirdetok.felhasznalonev%TYPE,
+    pass IN hirdetok.jelszo%TYPE,
+    email IN hirdetok.email%TYPE,
+    phone IN hirdetok.telefon%TYPE,
+    legal_name IN hirdetok.nev%TYPE,
+    cegid IN hirdetok.cegid%TYPE)
+IS
+BEGIN
+    INSERT INTO hirdetok (
+        felhasznalonev,
+        jelszo,
+        email,
+        telefon,
+        nev,
+        cegid) 
+        VALUES (username, pass, email, phone, legal_name,cegid);
+END;
+
 CREATE OR REPLACE FUNCTION can_delete_job
  (jobId IN hirdetesek.hirdetesid%TYPE, userID IN hirdetesek.hirdetoid%TYPE) RETURN NUMBER
 IS
@@ -390,7 +409,7 @@ BEGIN
 END;
 
 CREATE OR REPLACE TRIGGER insert_work_type
-BEFORE UPDATE OR INSERT hirdetesek
+BEFORE UPDATE OR INSERT ON hirdetesek
 FOR EACH ROW 
 DECLARE 
 	v_type_count NUMBER := 0;
@@ -413,12 +432,8 @@ END;
 CREATE OR REPLACE TRIGGER delete_children
 BEFORE DELETE ON hirdetesek
 FOR EACH ROW
-DECLARE
-pragma autonomous_transaction;
 BEGIN
-    DELETE FROM jelentkezesek WHERE hirdetesID = :NEW.hirdetesID;
-    DELETE FROM hirdetes_jellege WHERE hirdetesID = :NEW.hirdetesID;
-    commit;
+    DELETE FROM hirdetes_jellege WHERE hirdetesID = :OLD.hirdetesID;
 END;
 
 CREATE OR REPLACE TRIGGER output_on_action

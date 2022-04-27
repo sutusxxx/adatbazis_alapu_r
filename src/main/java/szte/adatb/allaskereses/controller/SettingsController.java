@@ -3,8 +3,8 @@ package szte.adatb.allaskereses.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import szte.adatb.allaskereses.model.Advertiser;
-import szte.adatb.allaskereses.model.JobSeeker;
+import szte.adatb.allaskereses.model.user.Advertiser;
+import szte.adatb.allaskereses.model.user.JobSeeker;
 import szte.adatb.allaskereses.service.SettingsService;
 
 @RestController

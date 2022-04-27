@@ -1,4 +1,4 @@
-package szte.adatb.allaskereses.model;
+package szte.adatb.allaskereses.model.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

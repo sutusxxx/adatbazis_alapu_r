@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import szte.adatb.allaskereses.model.*;
+import szte.adatb.allaskereses.model.user.*;
 import szte.adatb.allaskereses.service.AuthService;
 
 @RestController

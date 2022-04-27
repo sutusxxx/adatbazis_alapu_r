@@ -2,10 +2,9 @@ package szte.adatb.allaskereses.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import szte.adatb.allaskereses.model.*;
+import szte.adatb.allaskereses.model.user.*;
 import szte.adatb.allaskereses.repository.UserRepository;
 
-import java.util.List;
 import java.util.Map;
 
 @Service

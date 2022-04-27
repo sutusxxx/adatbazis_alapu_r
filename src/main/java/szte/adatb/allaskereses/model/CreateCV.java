@@ -1,5 +1,6 @@
 package szte.adatb.allaskereses.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +10,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Advertiser {
-    private int id;
-    private String username;
-    private String password;
-    private String email;
-    private String phone;
-    private String name;
-    private int companyId;
+public class CreateCV {
+    private String introduction;
+    private String experience;
+    private String motivation;
+    private int jobSeekerId;
 }

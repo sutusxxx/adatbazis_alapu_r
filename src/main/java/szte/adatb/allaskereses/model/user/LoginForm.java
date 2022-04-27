@@ -1,4 +1,4 @@
-package szte.adatb.allaskereses.model;
+package szte.adatb.allaskereses.model.user;
 
 public class LoginForm {
     public String username;

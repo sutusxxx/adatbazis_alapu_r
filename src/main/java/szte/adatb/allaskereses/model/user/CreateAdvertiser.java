@@ -1,4 +1,4 @@
-package szte.adatb.allaskereses.model;
+package szte.adatb.allaskereses.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,13 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admin {
-    private int id;
+public class CreateAdvertiser {
     private String username;
     private String password;
-
-    @Override
-    public String toString() {
-        return this.username;
-    }
+    private String email;
+    private String phone;
+    private String name;
 }

@@ -2,10 +2,11 @@ package szte.adatb.allaskereses.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import szte.adatb.allaskereses.model.CreateJob;
-import szte.adatb.allaskereses.model.Job;
-import szte.adatb.allaskereses.model.JobDetails;
-import szte.adatb.allaskereses.model.UpdateJob;
+import szte.adatb.allaskereses.model.*;
+import szte.adatb.allaskereses.model.job.CreateJob;
+import szte.adatb.allaskereses.model.job.Job;
+import szte.adatb.allaskereses.model.job.JobDetails;
+import szte.adatb.allaskereses.model.job.UpdateJob;
 import szte.adatb.allaskereses.repository.JobRepository;
 
 import java.util.List;
@@ -54,5 +55,9 @@ public class JobService {
 
     public boolean deleteJob(int id, int userId) {
         return this.repository.delete(id, userId);
+    }
+
+    public boolean createCV(CreateCV cv) {
+        return this.repository.create(cv);
     }
 }

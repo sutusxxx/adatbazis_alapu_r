@@ -364,6 +364,21 @@ BEGIN
         (job_name, job_description, job_id, place);
 END;
 
+CREATE OR REPLACE PROCEDURE create_cv (
+    cv_introduction IN oneletrajzok.bemutatkozas%TYPE,
+    cv_experience IN oneletrajzok.tapasztalat%TYPE,
+    cv_motivation IN oneletrajzok.motivacio%TYPE,
+    cv_allaskeresoid IN oneletrajzok.allaskeresoid%TYPE) 
+    IS 
+BEGIN
+    INSERT INTO oneletrajzok(
+        bemutatkozas, 
+        tapasztalat, 
+        motivacio,
+        allaskeresoid) 
+        VALUES (cv_introduction, cv_experience, cv_motivation, cv_allaskeresoid);
+END;
+
 CREATE SEQUENCE hirdetesek_sequence;
 ALTER SEQUENCE hirdetesek_sequence INCREMENT BY 25;
 CREATE OR REPLACE TRIGGER hirdetesek_insert
@@ -446,10 +461,21 @@ BEGIN
     END IF;
 END;
 
-CREATE TRIGGER allaskereso_registration
+CREATE OR REPLACE TRIGGER allaskereso_registration
 AFTER INSERT ON allaskeresok
 FOR EACH ROW
 BEGIN
     DBMS_OUTPUT.PUT_LINE('Álláskereső regisztráció');
     DBMS_OUTPUT.PUT_LINE('felhasználónév: ' || :NEW.felhasznalonev);
 END;
+
+CREATE OR REPLACE TRIGGER cv_insert
+BEFORE INSERT ON oneletrajzok
+FOR EACH ROW
+BEGIN 
+    SELECT cv_sequence.nextval
+    INTO :new.oneletrajzID
+    FROM dual;
+END;
+
+CREATE SEQUENCE  "ALLASKERESES"."CV_SEQUENCE"  MINVALUE 25 MAXVALUE 9999999999999999999999999999 INCREMENT BY 25 START WITH 25 CACHE 20 NOORDER  NOCYCLE  NOPARTITION ;

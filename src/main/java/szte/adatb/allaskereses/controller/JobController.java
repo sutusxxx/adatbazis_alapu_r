@@ -2,10 +2,11 @@ package szte.adatb.allaskereses.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import szte.adatb.allaskereses.model.CreateJob;
-import szte.adatb.allaskereses.model.Job;
-import szte.adatb.allaskereses.model.JobDetails;
-import szte.adatb.allaskereses.model.UpdateJob;
+import szte.adatb.allaskereses.model.*;
+import szte.adatb.allaskereses.model.job.CreateJob;
+import szte.adatb.allaskereses.model.job.Job;
+import szte.adatb.allaskereses.model.job.JobDetails;
+import szte.adatb.allaskereses.model.job.UpdateJob;
 import szte.adatb.allaskereses.service.JobService;
 
 import java.util.List;
@@ -49,6 +50,13 @@ public class JobController {
     public boolean createJob(@RequestBody CreateJob job) {
         System.out.println("createJob called");
         return service.createJob(job);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/createCV")
+    public boolean createCV(@RequestBody CreateCV cv) {
+        System.out.println("createCV called");
+        return service.createCV(cv);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")

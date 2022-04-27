@@ -3,10 +3,11 @@ package szte.adatb.allaskereses.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import szte.adatb.allaskereses.model.CreateJob;
-import szte.adatb.allaskereses.model.Job;
-import szte.adatb.allaskereses.model.JobDetails;
-import szte.adatb.allaskereses.model.UpdateJob;
+import szte.adatb.allaskereses.model.*;
+import szte.adatb.allaskereses.model.job.CreateJob;
+import szte.adatb.allaskereses.model.job.Job;
+import szte.adatb.allaskereses.model.job.JobDetails;
+import szte.adatb.allaskereses.model.job.UpdateJob;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -144,6 +145,22 @@ public class JobRepository{
             stmt.setString(2, entity.getDescription());
             stmt.setInt(3, entity.getAdvertiserId());
             stmt.setString(4, entity.getPlace());
+            stmt.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean create(CreateCV entity) {
+        // PROCEDURE IN create_cv
+        try(Connection conn = dataSource.getConnection();
+            CallableStatement stmt = conn.prepareCall("{call create_cv(?, ?, ?, ?)}")) {
+            stmt.setString(1, entity.getIntroduction());
+            stmt.setString(2, entity.getExperience());
+            stmt.setString(3, entity.getMotivation());
+            stmt.setInt(4, entity.getJobSeekerId());
             stmt.execute();
             return true;
         } catch (SQLException e) {
