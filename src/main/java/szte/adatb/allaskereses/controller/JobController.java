@@ -25,6 +25,7 @@ public class JobController {
     @GetMapping("/jobs")
     public List<Job> getJobList(@RequestParam Optional<Integer> id) {
         System.out.println("getJobList called");
+        System.out.println(id);
         if (id.isPresent()) {
             return service.getJobListForAdvertiser(id.get());
         }

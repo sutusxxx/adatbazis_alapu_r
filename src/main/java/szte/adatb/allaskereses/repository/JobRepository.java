@@ -10,6 +10,7 @@ import szte.adatb.allaskereses.model.job.JobDetails;
 import szte.adatb.allaskereses.model.job.UpdateJob;
 
 import javax.sql.DataSource;
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class JobRepository{
     private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
 
+    private final String SELECT_JOBS_FOR_ADVERTISER = "SELECT * FROM hirdetesek WHERE hirdetoID = ?";
     private final String SELECT_JOB = "SELECT * FROM hirdetesek WHERE hirdetesID = ?";
     private final String SELECT_JOB_DETAILS = "SELECT hirdetesID, cim, leiras, helyszin, hirdetok.nev AS hirdeto_nev, email, " +
             "hirdetok.telefon AS hirdeto_telefon, cegek.nev AS ceg_nev, hirdetok.hirdetoID AS hirdeto FROM hirdetesek INNER JOIN hirdetok ON hirdetesek.hirdetoID = hirdetok.hirdetoID " +
@@ -47,7 +49,25 @@ public class JobRepository{
     }
 
     public List<Job> findAllForUser(int userId) {
-        return null;
+        List<Job> result = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SELECT_JOBS_FOR_ADVERTISER)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                Job job = new Job(
+                        rs.getInt("hirdetesID"),
+                        rs.getString("cim"),
+                        rs.getString("leiras"),
+                        rs.getInt("hirdetoID"),
+                        rs.getString("helyszin")
+                );
+                result.add(job);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public Job find(int id) {
