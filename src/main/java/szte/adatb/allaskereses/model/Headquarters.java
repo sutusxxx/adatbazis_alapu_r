@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class headquarters {
+public class Headquarters {
     private int id;
     private String county;
     private String city;

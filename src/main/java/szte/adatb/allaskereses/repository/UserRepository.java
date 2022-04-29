@@ -3,6 +3,8 @@ package szte.adatb.allaskereses.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import szte.adatb.allaskereses.model.Company;
+import szte.adatb.allaskereses.model.Headquarters;
 import szte.adatb.allaskereses.model.user.*;
 
 import javax.sql.DataSource;
@@ -17,12 +19,15 @@ public class UserRepository {
     private JdbcTemplate jdbcTemplate;
     private DataSource dataSource;
 
-    private static final String SELECT_ALL_JS = "SELECT * FROM allaskeresok";
-    private static final String SELECT_APPLICATIONS_FOR_USER = "SELECT cim, hirdetesek.hirdetesID FROM hirdetesek " +
-            "INNER JOIN jelentkezesek ON hirdetesek.hirdetesId = jelentkezesek.hirdetesId WHERE hirdetesek.hirdetesId = ?";
-    private static final String SELECT_ALL_AT = "SELECT * FROM hirdetok";
-    private static final String SELECT_USER_BY_ID = "SELECT * FROM allaskeresok WHERE allaskeresoID=?";
-
+    private final String SELECT_ALL_JS = "SELECT * FROM allaskeresok";
+    private final String SELECT_APPLICATIONS_FOR_USER = "SELECT cim, hirdetesek.hirdetesID FROM hirdetesek " +
+            "INNER JOIN jelentkezesek ON hirdetesek.hirdetesId = jelentkezesek.hirdetesId WHERE jelentkezesek.allaskeresoID = ?";
+    private final String SELECT_ALL_AT = "SELECT * FROM hirdetok";
+    private final String SELECT_USER_BY_ID = "SELECT * FROM allaskeresok WHERE allaskeresoID=?";
+    private final String SELECT_COMPANY_FOR_ADVERTISER = "SELECT * FROM cegek INNER JOIN szekhelyek ON cegek.szekhelyID = " +
+            "szekhelyek.szekhelyID WHERE cegID = (SELECT cegID FROM " +
+            "hirdetok WHERE hirdetoID = ?)";
+    private final String SELECT_ADVERTISER_BY_ID = "SELECT * FROM hirdetok WHERE hirdetoID = ?";
     @Autowired
     public UserRepository(JdbcTemplate jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
@@ -70,7 +75,7 @@ public class UserRepository {
                         rs.getString("email"),
                         rs.getString("telefon"),
                         rs.getString("nev"),
-                        rs.getInt("cegID")
+                        null
                 );
                 list.add(at);
             }
@@ -107,6 +112,49 @@ public class UserRepository {
         }
     }
 
+    public Advertiser findAdvertiser(int id) {
+        Advertiser result = null;
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(SELECT_COMPANY_FOR_ADVERTISER);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Headquarters hq = new Headquarters(
+                        rs.getInt("SzekhelyID"),
+                        rs.getString("megye"),
+                        rs.getString("varos"),
+                        rs.getString("utca"),
+                        rs.getInt("hazszam"),
+                        rs.getInt("irsz")
+                );
+                Company company = new Company(
+                        rs.getInt("cegID"),
+                        rs.getString("nev"),
+                        rs.getString("telefon"),
+                        null,
+                        hq
+                );
+                ps = conn.prepareStatement(SELECT_ADVERTISER_BY_ID);
+                ps.setInt(1, id);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    result = new Advertiser(
+                            rs.getInt("hirdetoID"),
+                            rs.getString("felhasznalonev"),
+                            rs.getString("jelszo"),
+                            rs.getString("email"),
+                            rs.getString("telefon"),
+                            rs.getString("nev"),
+                            company
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public Map<String, String> findApplicationsForUser(int userId) {
         Map<String, String> result = new HashMap<>();
         try (Connection conn = dataSource.getConnection();
@@ -120,6 +168,10 @@ public class UserRepository {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public boolean deleteApplication(int userId, int jobId) {
+        return false;
     }
 
     public JobSeeker loginJobSeeker(LoginForm loginForm) {

@@ -13,5 +13,6 @@ public class Company {
     private int id;
     private String name;
     private String phone;
-    private int hqId;
+    private String email;
+    private Headquarters hq;
 }

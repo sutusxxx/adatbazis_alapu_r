@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import szte.adatb.allaskereses.model.Company;
 
 @Getter
 @Setter
@@ -16,5 +17,5 @@ public class Advertiser {
     private String email;
     private String phone;
     private String name;
-    private int companyId;
+    private Company company;
 }

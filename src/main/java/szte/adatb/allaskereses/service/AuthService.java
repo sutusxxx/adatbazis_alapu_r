@@ -19,10 +19,6 @@ public class AuthService {
 
     public JobSeeker loginJobSeeker(LoginForm loginForm) {
         JobSeeker jobSeeker = repository.loginJobSeeker(loginForm);
-        if (jobSeeker != null) {
-            Map<String, String> applications = repository.findApplicationsForUser(jobSeeker.getId());
-            jobSeeker.setApplications(applications);
-        }
         return jobSeeker;
     }
 
